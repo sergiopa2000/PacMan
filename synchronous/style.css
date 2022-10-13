@@ -2,20 +2,21 @@
 
 @font-face {
     font-family: pacman;
-    src: url(../font/PAC-FONT.TTF);
+    src: url(../font/pacman.ttf);
 }
 
 body, html{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: pacman, monospace;
 }
 
 .board{
-    width: 50%;
-    margin: auto;
-    font-size: 2.5em;
-    line-height: 70px;
+    font-size: 4em;
+    line-height: 80px;
     letter-spacing: 20px;
-    font-weight: bold;
 }
 
 .input{
