@@ -26,31 +26,34 @@ game.board = class{
     }
 
     setControls(){
-        document.getElementById("testButton").onclick = function(){
+        document.getElementById("testButton").onclick = () =>{
             
             let text = document.getElementById("testInput").value
             console.log(text);
-            if(text == 1){
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
-                game.playerPosition.y--
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
-            }
-            if(text == 2){
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
-                game.playerPosition.x++
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
-            }
-            if(text == 3){
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
-                game.playerPosition.y++
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
-            }
-            if(text == 4){
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
-                game.playerPosition.x--
-                game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
-            }
+            this.movePlayer(text)
         }   
-        
+    }
+
+    movePlayer(direction){
+        if(direction == 1){
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
+            game.playerPosition.y--
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
+        }
+        if(direction == 2){
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
+            game.playerPosition.x++
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
+        }
+        if(direction == 3){
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
+            game.playerPosition.y++
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
+        }
+        if(direction == 4){
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
+            game.playerPosition.x--
+            game.boardArray[game.playerPosition.y][game.playerPosition.x] = "x"
+        }
     }
 }
