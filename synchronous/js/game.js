@@ -67,7 +67,6 @@ game.Player = class{
     }
 
     movePlayer(direction){
-        console.log("dentro");
         let prediction
         let moved = false
         switch (direction) {
@@ -130,7 +129,7 @@ game.Ghost = class{
  
     updateGhosts(){
         let attempt = 1
-        let moved = this.ghostNotMoved
+        let moved
         let coordsBefore
         for (let ghost of ghostsPositions) {
             coordsBefore = {x: ghost.x, y: ghost.y}
