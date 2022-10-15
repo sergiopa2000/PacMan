@@ -1,19 +1,20 @@
 var game = game || {}
 game.boardArray = [
-        [0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 2, 0, 2, 2, 2, 0, 2, 2, 0],
-        [0, 2, 0, 2, 2, 2, 0, 2, 2, 0],
-        [0, 0, 0, 2, 2, 2, 0, 2, 2, 0],
-        [0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 2, 0, 2, 2, 2, 2, 0, 2, 0],
-        [0, 2, 0, 0, 0, 0, 0, 0, 2, 0],
-        [0, 2, 0, 0, 0, 0, 0, 0, 2, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+    [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0],
+    [0, 2, 2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2, 2, 0],
+    [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+    [0, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 0],
+    [0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0],
+    [0, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 0],
+    [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+    [0, 2, 2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2, 2, 0],
+    [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0]
     ]
+game.boardYLimit = game.boardArray.length - 1
+game.boardXLimit = game.boardArray[0].length - 1
 game.playerPosition = {
-    x: 0,
-    y: 0
+    x: 8,
+    y: 2
 }
 game.Board = class{
     constructor(){
@@ -39,76 +40,79 @@ game.Player = class{
     }
 
     setUpPlayer(){
-        game.boardArray[0][0] = this.playerSymbol
+        game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
     }
 
     setControls(){
-        window.addEventListener("keydown", (event) =>{
-            let direction
-            switch (event.code) {
-                case "ArrowUp":
-                    direction = 1
-                    break;
-                case "ArrowRight":
-                    direction = 2
-                    break;
-                case "ArrowDown":
-                    direction = 3
-                    break;
-                case "ArrowLeft":
-                    direction = 4
-                    break;
-            }
-            let moved = this.movePlayer(direction)
-            if(moved){
-                this.ghost.updateGhosts()
-            }
-        })
+        window.addEventListener("keydown", this.keyListener)
+    }
+
+    keyListener = (event) =>{
+        let direction
+        switch (event.code) {
+            case "ArrowUp":
+                direction = "up"
+                break;
+            case "ArrowRight":
+                direction = "right"
+                break;
+            case "ArrowDown":
+                direction = "down"
+                break;
+            case "ArrowLeft":
+                direction = "left"
+                break;
+        }
+        let moved = this.movePlayer(direction)
+        if(moved){
+            this.ghost.updateGhosts()
+        }
+        this.checkLose()
     }
 
     movePlayer(direction){
-        console.log("dentro");
         let prediction
         let moved = false
+        game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
         switch (direction) {
-            case 1:
+            case "up":
                 prediction = game.playerPosition.y - 1
                 if(prediction >= 0 && game.boardArray[prediction][game.playerPosition.x] == 0){
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
                     game.playerPosition.y--
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
                     moved = true
                 }
                 break;
-            case 2:
+            case "right":
                 prediction = game.playerPosition.x + 1
                 if(game.boardArray[game.playerPosition.y][prediction] == 0){
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
                     game.playerPosition.x++
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
                     moved = true
                 }
                 break;
-            case 3:
+            case "down":
                 prediction = game.playerPosition.y + 1
                 if(game.boardArray[prediction][game.playerPosition.x] == 0){
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
                     game.playerPosition.y++
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
                     moved = true
                 }
                 break;
-            case 4:
+            case "left":
                 prediction = game.playerPosition.x - 1
                 if(prediction >= 0 && game.boardArray[game.playerPosition.y][prediction] == 0){
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = 0
                     game.playerPosition.x--
-                    game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
                     moved = true
                 }
                 break;
         }
+        game.boardArray[game.playerPosition.y][game.playerPosition.x] = this.playerSymbol
         return moved
+    }
+
+    checkLose(){
+        if(game.boardArray[game.playerPosition.y][game.playerPosition.x] != this.playerSymbol){
+            document.getElementById("lose").style.visibility = "visible"
+            window.removeEventListener("keydown", this.keyListener)
+        }
     }
 }
 
@@ -123,137 +127,59 @@ game.Ghost = class{
     }
 
     setUpGhosts(){
+
         for (const ghost of this.ghostsPositions) {
             game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
         }
     }
  
     updateGhosts(){
-        let attempt = 1
-        let moved = this.ghostNotMoved
-        let coordsBefore
         for (let ghost of ghostsPositions) {
-            coordsBefore = {x: ghost.x, y: ghost.y}
-            attempt = 1
-            moved = this.ghostNotMoved
-            while(moved == 0 && attempt < 6){
-                moved = this.moveGhost(attempt, ghost)
-                attempt++
-            }
-            if(moved != this.ghostStopped){
-                game.boardArray[coordsBefore.y][coordsBefore.x] = 0
-            }
+            this.moveGhost(ghost)
         }
     }
     
-    moveGhost(attempt, ghost){
-        let prediction
-        switch (attempt) {
-            case 1:
-                prediction = ghost.x + 1
-                if(game.boardArray[ghost.y][prediction] == this.playerSymbol){
-                    
-                    return this.ghostStopped
-                }
-
-                if(game.boardArray[ghost.y][prediction] != 0){
-                    return this.ghostNotMoved
-                }
-
-                if(game.playerPosition.x > ghost.x){
-                    ghost.x++
-                    game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-                    return this.ghostMoved
-                }
+    moveGhost(ghost){
+        let option = this.checkBestRoute(ghost, this.setUpOptions(ghost));
+        game.boardArray[ghost.y][ghost.x] = 0
+        switch(option){
+            case "up":
+                ghost.y--;
                 break;
-        
-            case 2:
-                prediction = ghost.x - 1
-                if(game.boardArray[ghost.y][prediction] == this.playerSymbol){
-                    return this.ghostStopped
-                }
-
-                if(game.boardArray[ghost.y][prediction] != 0 || prediction < 0){
-                    return this.ghostNotMoved
-                }
-
-                if(game.playerPosition.x < ghost.x){
-                    ghost.x--
-                    game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-                    return this.ghostMoved
-                }
+                
+            case "down":
+                ghost.y++;
                 break;
-            case 3:
-                prediction = ghost.y + 1
-                if(game.boardArray[prediction][ghost.x] == this.playerSymbol){
-                    return this.ghostStopped
-                }
 
-                if(game.boardArray[prediction][ghost.x] != 0){
-                    return this.ghostNotMoved
-                }
-
-                if(game.playerPosition.y > ghost.y){
-                    ghost.y++
-                    game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-                    return this.ghostMoved
-                }
-
+            case "left":
+                ghost.x--;
                 break;
-            case 4:
-                prediction = ghost.y - 1
 
-                if(game.boardArray[prediction][ghost.x] == this.playerSymbol){
-                    return this.ghostStopped
-                }
-
-                if(game.boardArray[prediction][ghost.x] != 0 || prediction < 0){
-                    return this.ghostNotMoved
-                }
-
-                if(game.playerPosition.y < ghost.y){
-                    ghost.y--
-                    game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-                    return this.ghostMoved
-                }
-                break;
-            case 5:
-                this.moveWhereYouCan(ghost)
+            case "right":
+                ghost.x++;
                 break;
         }
 
-        return this.ghostNotMoved
+        game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
     }
 
-    moveWhereYouCan(ghost){
-        let prediction
+    setUpOptions(ghost){
+        let options = []
+        if(ghost.y != 0 && game.boardArray[ghost.y - 1][ghost.x] != 2 && game.boardArray[ghost.y - 1][ghost.x] != this.ghostsSymbol) options.push("up")
+        if(ghost.y < game.boardYLimit && game.boardArray[ghost.y + 1][ghost.x] != 2 && game.boardArray[ghost.y + 1][ghost.x] != this.ghostsSymbol) options.push("down")
+        if(ghost.x != 0 && game.boardArray[ghost.y][ghost.x - 1] != 2 && game.boardArray[ghost.y][ghost.x - 1] != this.ghostsSymbol) options.push("left")
+        if(ghost.x < game.boardXLimit && game.boardArray[ghost.y][ghost.x + 1] != 2 && game.boardArray[ghost.y][ghost.x + 1] != this.ghostsSymbol) options.push("right")
 
-        prediction = ghost.x + 1
-        if(game.boardArray[ghost.y][prediction] == 0){
-            ghost.x++
-            game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-            return this.ghostMoved
-        }
+        return options
+    }
 
-        prediction = ghost.x - 1
-        if(prediction >= 0 && game.boardArray[ghost.y][prediction] == 0){
-            ghost.x--
-            game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-            return this.ghostMoved
-        }
-
-        prediction = ghost.y + 1
-        if(game.boardArray[prediction][ghost.x] == 0){
-            ghost.y++
-            game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-            return this.ghostMoved
-        }
-
-        prediction = ghost.y - 1
-        if(prediction >= 0 && game.boardArray[prediction][ghost.x] == 0){
-            ghost.y--
-            game.boardArray[ghost.y][ghost.x] = this.ghostsSymbol
-            return this.ghostMoved
-        }
+    checkBestRoute(ghost, options){
+        let selected
+        if(game.playerPosition.x < ghost.x && options.includes("left")) selected = "left"
+        else if(game.playerPosition.x > ghost.x && options.includes("right")) selected = "right"
+        else if(game.playerPosition.y < ghost.y && options.includes("up")) selected = "up"
+        else if(game.playerPosition.y > ghost.y && options.includes("down")) selected = "down"
+        else selected = options[Math.floor(Math.random() * options.length)];
+        return selected
     }
 }

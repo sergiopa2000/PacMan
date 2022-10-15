@@ -2,7 +2,7 @@ let board = new game.Board()
 board.startRefresh()
 
 
-let ghostsPositions = [{x: 4, y: 6}, {x: 5, y: 6}]
+let ghostsPositions = [{x: 0, y: 0}, {x: 17, y: 8}]
 let ghosts = new game.Ghost(3, ghostsPositions, 1)
 ghosts.setUpGhosts()
 
