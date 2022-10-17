@@ -15,9 +15,9 @@ body, html{
 
 .board{
     user-select: none;
-    font-size: 4em;
-    line-height: 70px;
-    letter-spacing: 20px;
+    font-size: 2em;
+    line-height: 40px;
+    letter-spacing: 10px;
 }
 
 .input{
