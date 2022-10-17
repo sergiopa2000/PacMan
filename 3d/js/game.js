@@ -98,27 +98,35 @@ game.Player = class{
         switch (direction) {
             case "up":
                 prediction = game.playerPosition.y - 1
-                if(prediction >= 0 && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 0) game.playerPosition.y--
-                else if(prediction >= 0 && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 5) game.actualLayer++
-                else if(prediction >= 0 && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 4) game.actualLayer++
+                if(prediction >= 0){
+                    if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 0) game.playerPosition.y--
+                    else if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 5) game.actualLayer++
+                    else if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 4) game.actualLayer++
+                }
                 break;
             case "right":
                 prediction = game.playerPosition.x + 1
-                if(prediction <= game.boardXLimit && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 0) game.playerPosition.x++
-                else if(prediction <= game.boardXLimit && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 5) game.actualLayer++
-                else if(prediction <= game.boardXLimit && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 4) game.actualLayer--
+                if(prediction <= game.boardXLimit){
+                    if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 0) game.playerPosition.x++
+                    else if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 5) game.actualLayer++
+                    else if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 4) game.actualLayer--
+                }
                 break;
             case "down":
                 prediction = game.playerPosition.y + 1
-                if(prediction <= game.boardYLimit && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 0) game.playerPosition.y++
-                else if(prediction <= game.boardYLimit && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 5) game.actualLayer++
-                else if(prediction <= game.boardYLimit && game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 4) game.actualLayer--
+                if(prediction <= game.boardYLimit){
+                    if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 0) game.playerPosition.y++
+                    else if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 5) game.actualLayer++
+                    else if(game.boardArray[game.actualLayer][prediction][game.playerPosition.x] == 4) game.actualLayer--
+                }
                 break;
             case "left":
                 prediction = game.playerPosition.x - 1
-                if(prediction >= 0 && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 0) game.playerPosition.x--
-                else if(prediction >= 0 && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 5) game.actualLayer++
-                else if(prediction >= 0 && game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 4) game.actualLayer--
+                if(prediction >= 0){
+                    if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 0) game.playerPosition.x--
+                    else if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 5) game.actualLayer++
+                    else if(game.boardArray[game.actualLayer][game.playerPosition.y][prediction] == 4) game.actualLayer--
+                }
                 break;
         }
         if(previusLayer != game.actualLayer){
