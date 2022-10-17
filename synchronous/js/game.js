@@ -21,15 +21,13 @@ game.Board = class{
         this.refresh = null
     }
 
-    startRefresh(){
+    refresh(){
         let boardContainer = document.getElementById("board")
-        this.refresh = setInterval(() =>{
-            boardContainer.innerHTML = ""
-            for (let row of game.boardArray) {
-                row = row.toString().replaceAll(',', ' ')
-                boardContainer.innerHTML += row + "<br>"
-            }
-        }, 33.333)
+        boardContainer.innerHTML = ""
+        for (let row of game.boardArray) {
+            row = row.toString().replaceAll(',', ' ')
+            boardContainer.innerHTML += row + "<br>"
+        }
     }
 }
 
@@ -37,6 +35,15 @@ game.Player = class{
     constructor(playerSymbol, ghosts){
         this.playerSymbol = playerSymbol
         this.ghost = ghosts
+    }
+
+    refreshBoard(){
+        let boardContainer = document.getElementById("board")
+        boardContainer.innerHTML = ""
+        for (let row of game.boardArray) {
+            row = row.toString().replaceAll(',', ' ')
+            boardContainer.innerHTML += row + "<br>"
+        }
     }
 
     setUpPlayer(){
@@ -68,6 +75,7 @@ game.Player = class{
             this.ghost.updateGhosts()
         }
         this.checkLose()
+        this.refreshBoard()
     }
 
     movePlayer(direction){
